@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flyball Live Monitor</title>
+    <style>
+        body { font-family: Arial; background:#111; color:white; text-align:center; }
+        .heat { margin:10px; padding:10px; background:#222; border-radius:8px; }
+    </style>
+</head>
+<body>
+
+<h1>Live Tournament Feed</h1>
+<div id="heats"></div>
+
+<script>
+const heatsDiv = document.getElementById("heats");
+
+const socket = new WebSocket("ws://127.0.0.1:8000/live");
+
+socket.onmessage = function(event) {
+    const msg = JSON.parse(event.data);
+
+    if (msg.type === "heat_recorded") {
+        const h = msg.data;
+
+        const div = document.createElement("div");
+        div.className = "heat";
+        div.innerHTML =
+            `<b>Race ${h.race} Heat ${h.heat}</b><br>
+             Lane: ${h.lane}<br>
+             Time: ${h.time}<br>
+             Result: ${h.result}<br>
+             Dogs: ${h.lineup.join(", ")}`;
+
+        heatsDiv.prepend(div);
+    }
+};
+</script>
+
+</body>
+</html>

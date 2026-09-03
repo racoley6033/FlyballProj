@@ -1,0 +1,44 @@
+{
+  "settings": {
+    "mode": "running",
+    "rings": 1
+  },
+  "dog_points": {
+    "1": 50,
+    "2": 50,
+    "3": 50,
+    "4": 50,
+    "5": 0,
+    "6": 0
+  },
+  "heats": [
+    {
+      "ring": 1,
+      "lane": "left",
+      "race": 1,
+      "heat": 1,
+      "lineup": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "time": 23.456,
+      "result": "W"
+    },
+    {
+      "ring": 1,
+      "lane": "left",
+      "race": 1,
+      "heat": 1,
+      "lineup": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "time": 23.456,
+      "result": "W"
+    }
+  ]
+}

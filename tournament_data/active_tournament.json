@@ -1,0 +1,102 @@
+{
+  "tournament_info": {
+    "name": "Mock NAFA Tournament",
+    "date": "2026-04-12",
+    "rings": 2,
+    "ring_colors": {
+      "1": "Black",
+      "2": "Blue"
+    },
+    "days": 1
+  },
+
+  "divisions": {
+    "Regular 1": { "breakout": 20.100 },
+    "Regular 2": { "breakout": 21.000 },
+    "Open 1": { "breakout": 19.500 },
+    "Multi 1": { "breakout": 22.000 }
+  },
+
+  "teams": {
+    "BBC All Wild": {
+      "club": "BBC",
+      "c2": true,
+      "division": "Regular 1",
+      "performance": false,
+      "feo": false
+    },
+    "FF Faux Fur": {
+      "club": "FF",
+      "c2": false,
+      "division": "Regular 1",
+      "performance": false,
+      "feo": false
+    },
+    "PP Puppy Love": {
+      "club": "PP",
+      "c2": false,
+      "division": "Regular 2",
+      "performance": false,
+      "feo": false
+    },
+    "LM Magic": {
+      "club": "LM",
+      "c2": false,
+      "division": "Regular 2",
+      "performance": false,
+      "feo": false
+    },
+    "FFF Fliers": {
+      "club": "FFF",
+      "c2": true,
+      "division": "Open 1",
+      "performance": false,
+      "feo": false
+    },
+    "CBD High": {
+      "club": "CBD",
+      "c2": false,
+      "division": "Open 1",
+      "performance": false,
+      "feo": false
+    }
+  },
+
+  "races": [
+    {
+      "race": 1,
+      "ring": 1,
+      "format": "3/5",
+      "left": "BBC All Wild",
+      "right": "FF Faux Fur"
+    },
+    {
+      "race": 2,
+      "ring": 2,
+      "format": "3/5",
+      "left": "PP Puppy Love",
+      "right": "LM Magic"
+    },
+    {
+      "race": 3,
+      "ring": 1,
+      "format": "3/5",
+      "left": "FFF Fliers",
+      "right": "CBD High"
+    },
+    {
+      "race": 4,
+      "ring": 2,
+      "format": "3/5",
+      "left": "BBC All Wild",
+      "right": "PP Puppy Love"
+    },
+    {
+      "race": 5,
+      "ring": 1,
+      "format": "3/5",
+      "left": "FF Faux Fur",
+      "right": "LM Magic"
+    }
+  ]
+}

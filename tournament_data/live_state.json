@@ -1,0 +1,16 @@
+{
+  "current_race_per_ring": {
+    "1": 1,
+    "2": 2
+  },
+
+  "heat_number": {
+    "1": 1,
+    "2": 1
+  },
+
+  "race_locked": {
+    "1": false,
+    "2": false
+  }
+}

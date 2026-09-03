@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Race Entry Tablet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #111;
+            color: white;
+            padding: 10px;
+        }
+
+        h1 { text-align: center; }
+
+        .division-header {
+            margin-top: 20px;
+            padding: 8px;
+            background: #000;
+            border-left: 6px solid orange;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .heat-row {
+            padding: 12px;
+            margin: 6px 0;
+            border-radius: 10px;
+            background: #1e1e1e;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .heat-row.active { background: #2d6cdf; }
+        .heat-row.done   { background: #555; color: #bbb; }
+
+        .entry-box {
+            background: #222;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 6px 0;
+            font-size: 18px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            background: #2d6cdf;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Heat Entry</h1>
+
+<div id="heatList"></div>
+
+<div class="entry-box">
+    <label>Lane 1 Time</label>
+    <input id="lane1">
+
+    <label>Lane 2 Time</label>
+    <input id="lane2">
+
+    <label>Winner</label>
+    <select id="winner">
+        <option value="">-- Select --</option>
+        <option value="1">Lane 1</option>
+        <option value="2">Lane 2</option>
+    </select>
+
+    <button onclick="submitHeat()">Submit Heat</button>
+</div>
+
+<script>
+/* ---------------- MOCK SCHEDULE ----------------
+Simulates realistic spacing between divisions
+You can change numbers freely for testing
+------------------------------------------------*/
+
+const schedule = [
+    {heat:1, division:"Regular"},
+    {heat:2, division:"Regular"},
+    {heat:3, division:"Regular"},
+
+    {heat:4, division:"Multibreed"},
+    {heat:5, division:"Multibreed"},
+    {heat:6, division:"Multibreed"},
+
+    {heat:7, division:"Regular"},
+    {heat:8, division:"Regular"},
+
+    {heat:9, division:"Multibreed"},
+    {heat:10, division:"Multibreed"},
+];
+
+let currentHeat = 1;
+let heatData = {};
+
+// ---------- BUILD LIST ----------
+function buildHeatList() {
+    const container = document.getElementById("heatList");
+    container.innerHTML = "";
+
+    let lastDivision = null;
+
+    schedule.forEach(item => {
+
+        if (item.division !== lastDivision) {
+            const header = document.createElement("div");
+            header.className = "division-header";
+            header.innerText = item.division.toUpperCase();
+            container.appendChild(header);
+            lastDivision = item.division;
+        }
+
+        const row = document.createElement("div");
+        row.className = "heat-row";
+        row.dataset.heatId = item.heat;
+        row.innerText = "Heat " + item.heat;
+
+        if (item.heat === 1) row.classList.add("active");
+
+        row.onclick = () => openHeat(item.heat);
+        container.appendChild(row);
+    });
+}
+
+buildHeatList();
+
+// ---------- NAV ----------
+function openHeat(id) {
+    document.querySelectorAll(".heat-row").forEach(r => r.classList.remove("active"));
+
+    const row = document.querySelector(`[data-heat-id="${id}"]`);
+    row.classList.add("active");
+    row.classList.remove("done");
+
+    currentHeat = id;
+    loadHeatIntoForm(id);
+}
+
+// ---------- FORM ----------
+function collectForm() {
+    return {
+        heat: currentHeat,
+        lane1: lane1.value,
+        lane2: lane2.value,
+        winner: winner.value
+    };
+}
+
+function clearForm() {
+    lane1.value = "";
+    lane2.value = "";
+    winner.value = "";
+}
+
+function loadHeatIntoForm(id) {
+    const data = heatData[id];
+    if (!data) return clearForm();
+
+    lane1.value = data.lane1 || "";
+    lane2.value = data.lane2 || "";
+    winner.value = data.winner || "";
+}
+
+// ---------- SUBMIT ----------
+async function submitHeat() {
+
+    const data = collectForm();
+    heatData[currentHeat] = data;
+
+    await fetch("/submit_heat", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(data)
+    });
+
+    markDone(currentHeat);
+    goNext();
+}
+
+function markDone(id) {
+    const row = document.querySelector(`[data-heat-id="${id}"]`);
+    row.classList.remove("active");
+    row.classList.add("done");
+}
+
+function goNext() {
+    const index = schedule.findIndex(h => h.heat === currentHeat);
+    if (index === -1 || index+1 >= schedule.length) return;
+
+    currentHeat = schedule[index+1].heat;
+    openHeat(currentHeat);
+}
+</script>
+
+</body>
+</html>
